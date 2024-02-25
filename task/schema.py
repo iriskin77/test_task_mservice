@@ -1,5 +1,5 @@
 from typing import List, Optional
-from product.schema import ProductBase
+#from product.schema import ProductBase
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 from datetime import datetime, date
 
@@ -26,8 +26,8 @@ class ListTasksAdd(BaseModel):
     tasks: List[TaskGetPostPatch]
 
 
-class TaskProducts(TaskGetPostPatch):
-    products: List[ProductBase]
+# class TaskProducts(TaskGetPostPatch):
+#     products: List[ProductBase]
 
 
 class TaskChange(BaseModel):

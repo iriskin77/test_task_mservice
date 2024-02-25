@@ -18,6 +18,15 @@
 - [x] docker
 - [ ] Базовый CI/CD
 
+## Как сделать миграции
+
++ piccolo migrations new test_task --auto
+  + warning: test_task может быть заменено на all
++ piccolo migrations forwards test_task
+  + warning: test_task может быть заменено на all
+
+Ссылка на документацию piccolo о миграциях: 
++ https://piccolo-orm.readthedocs.io/en/latest/piccolo/migrations/create.html
 
 ## Как запустить
 

@@ -1,117 +1,63 @@
+from models.models import Task, Product
 from datetime import datetime
-from task.models import Task, Product
-from task.schema import TaskFilter, TaskGetPostPatch, ListTasksAdd
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, and_, update, delete
-from fastapi import HTTPException
-
+from task.schema import TaskChange, TaskFilter, TaskFilterRes, TaskGetPostPatch, ListTasksAdd
 
 # ==================Post endpoint. Create a task==================
 
 
-async def _create_task(item: ListTasksAdd, async_session: AsyncSession):
+async def _create_task(item: TaskGetPostPatch):
 
-    res_list = []
-    for new_task in item.tasks:
+    task_by_batch_date = await get_task_by_batch_date(date_batch=item.date_batch)
 
-        task = await get_task_by_batch_date(new_task=new_task,
-                                            async_session=async_session)
+    if not item.is_closed:
+        item.closed_at = None
 
-        # Если смена не закрыта (False)
-        if not new_task.is_closed:
-            new_task.closed_at = None
+    if task_by_batch_date is not None:
 
-        # Если уже существует какая-то партия с аналогичным номером партии и датой партии, мы должны ее перезаписать.
-        # Здесь проверяем, если есть, то перезаписываем
-        if task is not None:
+        new_task_to_update = item.dict(exclude={'number_batch', 'date_batch'})
 
-            new_task_to_update = new_task.dict(exclude={'number_batch', 'date_batch'})
+        res = await Task.update(new_task_to_update).where(
+            (Task.number_batch == item.number_batch) & (Task.date_batch == item.date_batch)
+        ).returning(Task.id)
 
-            query = update(Task).\
-                where(and_(Task.number_batch == task.number_batch,
-                           Task.date_batch == task.date_batch)).values(**new_task_to_update)
-
-            res_list.append(new_task)
-            await async_session.execute(query)
-
-        else:
-            new_task_to_add = Task(**new_task.dict())
-            async_session.add(new_task_to_add)
-            res_list.append(new_task)
-
-    await async_session.commit()
-    return {'tasks': res_list}
+    return res
 
 
-async def get_task_by_batch_date(new_task: TaskGetPostPatch,
-                                 async_session: AsyncSession):
+async def get_task_by_batch_date(date_batch):
+    task = Task.select().where(Task.date_batch == date_batch)
+    if task:
+        return task
+    return None
 
-    query = select(Task).where(and_(Task.number_batch == new_task.number_batch,
-                                    Task.date_batch == new_task.date_batch))
+async def _get_task(id: int):
 
-    task = await async_session.execute(query)
-    task_row = task.fetchone()
-    if task_row is not None:
-        return task_row[0]
+    task = await _get_task_by_id(id=id)
 
+    #res = await Product.select(Product.unique_code, Product.number_batch.task)
+    products = await Product.select(Product.number_batch, Product.all_columns())
+    task['products'] = products
 
-# ==================Get endpoint. Get a task by id ==================
-
-
-async def _get_task(id: int, async_session: AsyncSession):
-
-    try:
-
-        task = await _get_task_by_id(id=id,
-                                     async_session=async_session)
-
-        products_query = select(Product).\
-            select_from(Task).\
-            join(Product, Product.number_batch_id == Task.number_batch).\
-            where(Product.number_batch_id == task.number_batch)
-
-        products = await async_session.execute(products_query)
-
-        pr = [p for p in products.scalars()]
-
-        res = {
-              "is_closed": task.is_closed,
-              "closed_at": task.closed_at,
-              "task": task.task,
-              "line": task.line,
-              "shift": task.shift,
-              "group": task.group,
-              "number_batch": task.number_batch,
-              "date_batch": task.date_batch,
-              "nomenclature": task.nomenclature,
-              "code": task.code,
-              "index": task.index,
-              "date_begin": task.date_begin,
-              "date_end": task.date_end,
-              "products": pr
-        }
-
-        return res
-
-    except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"{ex}")
+    return task
 
 
-async def _get_task_by_id(id: int, async_session: AsyncSession):
-
-    query = select(Task).where(Task.id == id)
-    task = await async_session.execute(query)
-    task_row = task.fetchone()
-    if task_row is not None:
-        return task_row[0]
+async def _get_tasks_list():
+    tasks = await Task.select()
+    print(tasks)
+    return tasks
 
 
-# ================ Patch endpoint, Change a task =================
+async def _get_task_by_id(id: int):
 
-
-async def _change_task(id: int,
-                       params_to_update: dict,
-                       async_session: AsyncSession):
+    task = await Task.select().where(Task.id == id).first()
+    if task:
+        return task
+    return None
+#
+#
+# # ================ Patch endpoint, Change a task =================
+#
+#
+async def _change_task(id: int, params_to_update: dict):
 
     is_closed = params_to_update.get('is_closed', None)
 
@@ -123,35 +69,15 @@ async def _change_task(id: int,
     if is_closed is not None and not is_closed:
         params_to_update['closed_at'] = None
 
-    query = update(Task).\
-        where(Task.id == id).\
-        values(**params_to_update)
+    await Task.update(params_to_update).where(Task.id == id)
 
-    task_updated = await async_session.execute(query)
-    await async_session.commit()
-
-    task_updated = await _get_task_by_id(id=id,
-                                         async_session=async_session)
+    task_updated = await _get_task_by_id(id=id)
+    print(task_updated)
 
     return task_updated
 
 
-# ======================== Filter tasks ==========================
+async def _delete_task(id: int):
+    task = await Task.delete().where(Task.id == id).returning(Task.id)
+    return task
 
-async def _get_filtered_tasks(item: TaskFilter,
-                              offset: int,
-                              limit: int,
-                              async_session: AsyncSession):
-
-    params_to_sort = item.dict(exclude_none=True)
-    try:
-        query = select(Task).\
-            filter_by(**params_to_sort).offset(offset).limit(limit)
-
-        tasks = await async_session.execute(query)
-        res_tasks = [task for task in tasks.scalars()]
-        res = {"tasks": res_tasks}
-        return res
-
-    except Exception as ex:
-        raise HTTPException(status_code=500, detail=f"{ex}")

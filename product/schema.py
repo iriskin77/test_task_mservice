@@ -6,7 +6,7 @@ from datetime import datetime, date
 class ProductBase(BaseModel):
 
     unique_code: str = Field(validation_alias="УникальныйКодПродукта")
-    number_batch_id: int = Field(validation_alias="НомерПартии")
+    number_batch: int = Field(validation_alias="НомерПартии")
     date_product: date = Field(validation_alias="ДатаПартии")
 
     model_config = ConfigDict(populate_by_name=True,)
