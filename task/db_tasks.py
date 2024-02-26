@@ -29,6 +29,7 @@ async def get_task_by_batch_date(date_batch):
         return task
     return None
 
+
 async def _get_task(id: int):
 
     task = await _get_task_by_id(id=id)
@@ -42,7 +43,6 @@ async def _get_task(id: int):
 
 async def _get_tasks_list():
     tasks = await Task.select()
-    print(tasks)
     return tasks
 
 

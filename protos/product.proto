@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package product;
+
+import "google/protobuf/timestamp.proto";
+
+message Product {
+
+  uint64 id = 1;
+  string unique_code = 2;
+  uint64 number_batch = 3;
+  bool is_aggregated = 4;
+  google.protobuf.Timestamp aggregated_at = 5;
+  google.protobuf.Timestamp date_product = 6;
+}
+
+message ProductCreate {
+  string unique_code = 1;
+  uint64 number_batch = 2;
+  google.protobuf.Timestamp date_product = 3;
+}
+
+message CreateProductRequest {
+  repeated ProductCreate products = 1;
+}
+
+message CreateProductResponse {
+  repeated ProductCreate products = 1;
+}
+
+//message AggregateRequest {
+//  uint64 id = 1;
+//  string unique_code = 2;
+//}
+//
+//message AggregateResponse {
+//  Product product = 1;
+//}
+
+
+service ProductService {
+  rpc CreateProducts(CreateProductRequest) returns (CreateProductResponse);
+}
