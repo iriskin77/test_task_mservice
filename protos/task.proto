@@ -2,46 +2,67 @@ syntax = "proto3";
 
 package task;
 
-import "google/protobuf/timestamp.proto";
+//import "google/protobuf/timestamp.proto";
 import "protos/product.proto";
 
 message Task {
 
   uint64 id = 1;
   bool is_closed = 2;
-  google.protobuf.Timestamp closed_at = 3;
+  float closed_at = 3;
   string task = 4;
   string line = 5;
   string shift = 6;
   string group = 7;
-  int64 number_batch = 8;
-  google.protobuf.Timestamp date_batch = 9;
+  uint64 number_batch = 8;
+  float date_batch = 9;
   string nomenclature = 10;
   string code = 11;
   string index = 12;
-  google.protobuf.Timestamp date_begin = 13;
-  google.protobuf.Timestamp date_end = 14;
+  float date_begin = 13;
+  float date_end = 14;
 
 }
-// Запрос на создание задачи
-message CreateTaskRequest {
-   bool is_closed = 1;
-  google.protobuf.Timestamp closed_at = 2;
+
+message CreateTask {
+
+  bool is_closed = 1;
+  float closed_at = 2;
   string task = 3;
   string line = 4;
   string shift = 5;
   string group = 6;
-  int64 number_batch = 7;
-  google.protobuf.Timestamp date_batch = 8;
+  uint64 number_batch = 7;
+  float date_batch = 8;
   string nomenclature = 9;
   string code = 10;
   string index = 11;
-  google.protobuf.Timestamp date_begin = 12;
-  google.protobuf.Timestamp date_end = 13;
+  float date_begin = 12;
+  float date_end = 13;
+
+}
+
+
+// Запрос на создание задачи
+message CreateTaskRequest {
+  bool is_closed = 1;
+  float closed_at = 2;
+  string task = 3;
+  string line = 4;
+  string shift = 5;
+  string group = 6;
+  uint64 number_batch = 7;
+  float date_batch = 8;
+  string nomenclature = 9;
+  string code = 10;
+  string index = 11;
+  float date_begin = 12;
+  float date_end = 13;
 }
 
 message CreateTaskResponse {
-   Task task = 1;
+  uint64 id = 1;
+
 }
 
 // Запрос на получение задачи
@@ -54,25 +75,47 @@ message GetTaskResponse {
    repeated product.Product products = 2;
 }
 
-message GetTaskListRequest {
-  uint64 id = 1;
-}
+message GetTaskListRequest {}
 
 message GetTaskListResponse {
   repeated Task tasks = 1;
 }
 
+message UpdateTaskRequest {
+
+  uint64 id = 1;
+  optional bool is_closed = 2;
+  optional float closed_at = 3;
+  optional string task = 4;
+  optional string line = 5;
+  optional string shift = 6;
+  optional string group = 7;
+  optional uint64 number_batch = 8;
+  optional float date_batch = 9;
+  optional string nomenclature = 10;
+  optional string code = 11;
+  optional string index = 12;
+  optional float date_begin = 13;
+  optional float date_end = 14;
+
+}
+
+message UpdateTaskResponse{
+  uint64 id = 1;
+}
+
 message DeleteTaskRequest {
-  int64 id = 1;
+  uint64 id = 1;
 }
 
 message DeleteTaskResponse {
-  int64 id = 1;
+  uint64 id = 1;
 }
 
 service TaskService {
   rpc CreateTask(CreateTaskRequest) returns (CreateTaskResponse);
   rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
   rpc GetTaskList(GetTaskListRequest) returns (GetTaskListResponse);
+  rpc UpdateTask(UpdateTaskRequest) returns (UpdateTaskResponse);
   rpc DeleteTask(DeleteTaskRequest) returns (DeleteTaskResponse);
 }

@@ -29,6 +29,11 @@ class TaskServiceStub(object):
                 request_serializer=protos_dot_task__pb2.GetTaskListRequest.SerializeToString,
                 response_deserializer=protos_dot_task__pb2.GetTaskListResponse.FromString,
                 )
+        self.UpdateTask = channel.unary_unary(
+                '/task.TaskService/UpdateTask',
+                request_serializer=protos_dot_task__pb2.UpdateTaskRequest.SerializeToString,
+                response_deserializer=protos_dot_task__pb2.UpdateTaskResponse.FromString,
+                )
         self.DeleteTask = channel.unary_unary(
                 '/task.TaskService/DeleteTask',
                 request_serializer=protos_dot_task__pb2.DeleteTaskRequest.SerializeToString,
@@ -57,6 +62,12 @@ class TaskServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def UpdateTask(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def DeleteTask(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -80,6 +91,11 @@ def add_TaskServiceServicer_to_server(servicer, server):
                     servicer.GetTaskList,
                     request_deserializer=protos_dot_task__pb2.GetTaskListRequest.FromString,
                     response_serializer=protos_dot_task__pb2.GetTaskListResponse.SerializeToString,
+            ),
+            'UpdateTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.UpdateTask,
+                    request_deserializer=protos_dot_task__pb2.UpdateTaskRequest.FromString,
+                    response_serializer=protos_dot_task__pb2.UpdateTaskResponse.SerializeToString,
             ),
             'DeleteTask': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteTask,
@@ -144,6 +160,23 @@ class TaskService(object):
         return grpc.experimental.unary_unary(request, target, '/task.TaskService/GetTaskList',
             protos_dot_task__pb2.GetTaskListRequest.SerializeToString,
             protos_dot_task__pb2.GetTaskListResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def UpdateTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/task.TaskService/UpdateTask',
+            protos_dot_task__pb2.UpdateTaskRequest.SerializeToString,
+            protos_dot_task__pb2.UpdateTaskResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

@@ -4,6 +4,24 @@ from pydantic import BaseModel, Field, ConfigDict, field_validator
 from datetime import datetime, date
 
 
+class CreateTask(BaseModel):
+    is_closed: bool | None = Field(validation_alias="СтатусЗакрытия", default=True)
+    closed_at: Optional[datetime] | None = Field(validation_alias="ВремяЗакрытия", default=None)
+    task: str | None = Field(validation_alias="ПредставлениеЗаданияНаСмену")
+    line: str | None = Field(validation_alias="Линия")
+    shift: str | None = Field(validation_alias="Смена")
+    group: str | None = Field(validation_alias="Бригада")
+    number_batch: int | None = Field(validation_alias="НомерПартии")
+    date_batch: datetime | None = Field(validation_alias="ДатаПартии")
+    nomenclature: str | None = Field(validation_alias="Номенклатура")
+    code: str | None = Field(validation_alias="КодЕКН")
+    index: str | None = Field(validation_alias="ИдентификаторРЦ")
+    date_begin: datetime | None = Field(validation_alias="ДатаВремяНачалаСмены")
+    date_end: datetime | None = Field(validation_alias="ДатаВремяОкончанияСмены")
+
+    model_config = ConfigDict(populate_by_name=True,)
+
+
 class TaskGetPostPatch(BaseModel):
     is_closed: bool | None = Field(validation_alias="СтатусЗакрытия", default=True)
     closed_at: Optional[datetime] | None = Field(validation_alias="ВремяЗакрытия", default=None)
@@ -31,6 +49,7 @@ class ListTasksAdd(BaseModel):
 
 
 class TaskChange(BaseModel):
+    id: int
     is_closed: Optional[bool] | None
     task: str | None
     line: str | None
