@@ -1,6 +1,5 @@
 from datetime import datetime
 from models.models import Task, Product
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from product.schema import ListAddProducts, ProductAggregationRequest, ProductBase
 from fastapi import HTTPException
@@ -88,4 +87,3 @@ async def _aggregate_date(item: ProductAggregationRequest):
         where(Product.unique_code == item.unique_code)
 
     return product
-
