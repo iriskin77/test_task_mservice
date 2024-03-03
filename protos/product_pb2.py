@@ -12,24 +12,23 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14protos/product.proto\x12\x07product\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbc\x01\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x13\n\x0bunique_code\x18\x02 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x03 \x01(\x04\x12\x15\n\ris_aggregated\x18\x04 \x01(\x08\x12\x31\n\raggregated_at\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x30\n\x0c\x64\x61te_product\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"l\n\rProductCreate\x12\x13\n\x0bunique_code\x18\x01 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x02 \x01(\x04\x12\x30\n\x0c\x64\x61te_product\x18\x03 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"@\n\x14\x43reateProductRequest\x12(\n\x08products\x18\x01 \x03(\x0b\x32\x16.product.ProductCreate\"A\n\x15\x43reateProductResponse\x12(\n\x08products\x18\x01 \x03(\x0b\x32\x16.product.ProductCreate2a\n\x0eProductService\x12O\n\x0e\x43reateProducts\x12\x1d.product.CreateProductRequest\x1a\x1e.product.CreateProductResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14protos/product.proto\x12\x07product\"\x84\x01\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x13\n\x0bunique_code\x18\x02 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x03 \x01(\x04\x12\x15\n\ris_aggregated\x18\x04 \x01(\x08\x12\x15\n\raggregated_at\x18\x05 \x01(\x02\x12\x14\n\x0c\x64\x61te_product\x18\x06 \x01(\x02\"P\n\rProductCreate\x12\x13\n\x0bunique_code\x18\x01 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x02 \x01(\x04\x12\x14\n\x0c\x64\x61te_product\x18\x03 \x01(\x02\"@\n\x14\x43reateProductRequest\x12(\n\x08products\x18\x01 \x03(\x0b\x32\x16.product.ProductCreate\"A\n\x15\x43reateProductResponse\x12(\n\x08products\x18\x01 \x03(\x0b\x32\x16.product.ProductCreate2a\n\x0eProductService\x12O\n\x0e\x43reateProducts\x12\x1d.product.CreateProductRequest\x1a\x1e.product.CreateProductResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'protos.product_pb2', _globals)
 if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
-  _globals['_PRODUCT']._serialized_start=67
-  _globals['_PRODUCT']._serialized_end=255
-  _globals['_PRODUCTCREATE']._serialized_start=257
-  _globals['_PRODUCTCREATE']._serialized_end=365
-  _globals['_CREATEPRODUCTREQUEST']._serialized_start=367
-  _globals['_CREATEPRODUCTREQUEST']._serialized_end=431
-  _globals['_CREATEPRODUCTRESPONSE']._serialized_start=433
-  _globals['_CREATEPRODUCTRESPONSE']._serialized_end=498
-  _globals['_PRODUCTSERVICE']._serialized_start=500
-  _globals['_PRODUCTSERVICE']._serialized_end=597
+  _globals['_PRODUCT']._serialized_start=34
+  _globals['_PRODUCT']._serialized_end=166
+  _globals['_PRODUCTCREATE']._serialized_start=168
+  _globals['_PRODUCTCREATE']._serialized_end=248
+  _globals['_CREATEPRODUCTREQUEST']._serialized_start=250
+  _globals['_CREATEPRODUCTREQUEST']._serialized_end=314
+  _globals['_CREATEPRODUCTRESPONSE']._serialized_start=316
+  _globals['_CREATEPRODUCTRESPONSE']._serialized_end=381
+  _globals['_PRODUCTSERVICE']._serialized_start=383
+  _globals['_PRODUCTSERVICE']._serialized_end=480
 # @@protoc_insertion_point(module_scope)

@@ -4,37 +4,42 @@ from models.models import Task, Product
 from product.schema import ListAddProducts, ProductAggregationRequest, ProductBase
 from fastapi import HTTPException
 from task.db_tasks import _get_task_by_id
+from google.protobuf.json_format import MessageToDict
 
 
-async def _product_create(items: ListAddProducts):
-
+async def _product_create(items):
+    dict_product = MessageToDict(items, preserving_proto_field_name=True)
+    print('dict_product', dict_product)
+    products = datetime_to_timestamp(products=dict_product)
+    print(products)
     products_to_add = []
-    for new_product in items.products:
+    for new_product in products['products']:
 
         #print(new_product.date_product)
-        task = await get_task_by_num_date_batch(number_batch=new_product.number_batch,
-                                                date_product=new_product.date_product)
+        task = await get_task_by_num_date_batch(number_batch=new_product['number_batch'],
+                                                date_product=new_product['date_product'])
 
         #print(task)
 
-        product = await get_product_by_unique_code(unique_code=new_product.unique_code)
+        product = await get_product_by_unique_code(unique_code=new_product['unique_code'])
         #print(product)
 
         # Если продукция передана с несуществующей партией (== None),
         # т.е. нет сменного задания с указаным номером партии и датой партии, то данную продукцию можно игнорировать.
 
-        if task is not None:
+        #if task is not None:
             # Если переданная продукция с данным уникальным кодом уже существует, то ее можно игнорировать.
             #print(new_product)
-            if product is None:
+            #if product is None:
 
                 #dict_product = Product(**new_product.dict())
-                products_to_add.append(new_product)
+        products_to_add.append(new_product)
                 #print(new_product)
 
-                await Product.insert(Product(**new_product.dict()))
+        await Product.insert(Product(**new_product))
 
-    return {'products': products_to_add}
+    print({'products_result': products_to_add})
+    return products_to_add
 
 
 async def get_task_by_num_date_batch(number_batch,
@@ -87,3 +92,10 @@ async def _aggregate_date(item: ProductAggregationRequest):
         where(Product.unique_code == item.unique_code)
 
     return product
+
+
+def datetime_to_timestamp(products: list[dict]):
+    for product in products['products']:
+        product['date_product'] = datetime.fromtimestamp(product['date_product'])
+        product['number_batch'] = int(product['number_batch'])
+    return products

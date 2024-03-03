@@ -1,4 +1,3 @@
-from google.protobuf import timestamp_pb2 as _timestamp_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -18,9 +17,9 @@ class Product(_message.Message):
     unique_code: str
     number_batch: int
     is_aggregated: bool
-    aggregated_at: _timestamp_pb2.Timestamp
-    date_product: _timestamp_pb2.Timestamp
-    def __init__(self, id: _Optional[int] = ..., unique_code: _Optional[str] = ..., number_batch: _Optional[int] = ..., is_aggregated: bool = ..., aggregated_at: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ..., date_product: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    aggregated_at: float
+    date_product: float
+    def __init__(self, id: _Optional[int] = ..., unique_code: _Optional[str] = ..., number_batch: _Optional[int] = ..., is_aggregated: bool = ..., aggregated_at: _Optional[float] = ..., date_product: _Optional[float] = ...) -> None: ...
 
 class ProductCreate(_message.Message):
     __slots__ = ("unique_code", "number_batch", "date_product")
@@ -29,8 +28,8 @@ class ProductCreate(_message.Message):
     DATE_PRODUCT_FIELD_NUMBER: _ClassVar[int]
     unique_code: str
     number_batch: int
-    date_product: _timestamp_pb2.Timestamp
-    def __init__(self, unique_code: _Optional[str] = ..., number_batch: _Optional[int] = ..., date_product: _Optional[_Union[_timestamp_pb2.Timestamp, _Mapping]] = ...) -> None: ...
+    date_product: float
+    def __init__(self, unique_code: _Optional[str] = ..., number_batch: _Optional[int] = ..., date_product: _Optional[float] = ...) -> None: ...
 
 class CreateProductRequest(_message.Message):
     __slots__ = ("products",)

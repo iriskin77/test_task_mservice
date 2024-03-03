@@ -37,4 +37,4 @@ class Product(Table):
     number_batch = Integer()
     is_aggregated = Boolean(null=True)
     aggregated_at = Timestamp(null=True)
-    date_product = Date() #"ДатаПартии": "2024-01-30"
+    date_product = Timestamp() #"ДатаПартии": "2024-01-30"
