@@ -6,27 +6,25 @@ from task import db_tasks
 class TaskService(task_pb2_grpc.TaskServiceServicer):
 
     async def CreateTask(self, request, context):
-
+        print("CreateTask")
+        #print(request)
         res = await db_tasks._create_task(request_from_task_api=request)
-        id = res[0]['id']
+        print(res)
 
-        return task_pb2.CreateTaskResponse(id=id)
+        return task_pb2.CreateTaskResponse(id=1)
 
     async def GetTask(self, request, context):
-
+        print("GetTask")
         task = await db_tasks._get_task(id=request.id)
         return task_pb2.GetTaskResponse(task=task)
 
     async def GetTaskList(self, request, context):
-
-        tasks = await db_tasks._get_tasks_list()
         print("GetTaskList")
-        print(tasks)
+        tasks = await db_tasks._get_tasks_list()
         return task_pb2.GetTaskListResponse(tasks=tasks)
 
     async def UpdateTask(self, request, context):
-        print(11111111)
-
+        print("UpdateTask")
         task = await db_tasks._change_task(params_to_update=request)
         task_updated_id = task[0]['id']
         return task_pb2.UpdateTaskResponse(id=task_updated_id)
