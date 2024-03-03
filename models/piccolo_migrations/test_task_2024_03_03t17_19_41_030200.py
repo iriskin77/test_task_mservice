@@ -1,17 +1,15 @@
 from piccolo.apps.migrations.auto.migration_manager import MigrationManager
 from piccolo.columns.column_types import Boolean
-from piccolo.columns.column_types import Date
 from piccolo.columns.column_types import Integer
 from piccolo.columns.column_types import Serial
 from piccolo.columns.column_types import Text
 from piccolo.columns.column_types import Timestamp
 from piccolo.columns.column_types import Varchar
-from piccolo.columns.defaults.date import DateNow
 from piccolo.columns.defaults.timestamp import TimestampNow
 from piccolo.columns.indexes import IndexMethod
 
 
-ID = "2024-02-28T00:22:48:373644"
+ID = "2024-03-03T17:19:41:030200"
 VERSION = "1.3.0"
 DESCRIPTION = ""
 
@@ -139,10 +137,10 @@ async def forwards():
         tablename="product",
         column_name="date_product",
         db_column_name="date_product",
-        column_class_name="Date",
-        column_class=Date,
+        column_class_name="Timestamp",
+        column_class=Timestamp,
         params={
-            "default": DateNow(),
+            "default": TimestampNow(),
             "null": False,
             "primary_key": False,
             "unique": False,

@@ -1,15 +1,35 @@
 from grpc import aio
 from protos import product_pb2_grpc, product_pb2
 from product import db_products
-
+import google.protobuf.wrappers_pb2
 
 class ProductService(product_pb2_grpc.ProductServiceServicer):
 
     async def CreateProducts(self, request, context):
         print("CreateProducts")
         print(request)
-        products = await db_products._product_create(request)
-        return product_pb2.CreateProductResponse(products=products)
+        try:
+            await db_products._product_create(request)
+        except Exception as ex:
+            print(f"Logging, {ex}")
+            return product_pb2.CreateProductResponse(status=False)
+        else:
+            print('success', True)
+            return product_pb2.CreateProductResponse(status=True)
+
+    async def GetProductsList(self, request, context):
+        print("GetProductsList")
+        try:
+            products = await db_products.get_products()
+        except Exception as ex:
+            print(f"Logging, {ex}")
+            #return product_pb2.GetProductsListResponse(products=products)
+        else:
+            print('success', True)
+            return product_pb2.GetProductsListResponse(products=products)
+
+
+
 
 
 async def run_server(address):

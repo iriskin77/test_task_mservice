@@ -7,13 +7,13 @@ from task.db_tasks import _get_task_by_id
 from google.protobuf.json_format import MessageToDict
 
 
-async def _product_create(items):
+async def _product_create(items) -> None:
     dict_product = MessageToDict(items, preserving_proto_field_name=True)
     print('dict_product', dict_product)
-    products = datetime_to_timestamp(products=dict_product)
+    products = datetime_to_timestamp(products=dict_product['products'])
     print(products)
     products_to_add = []
-    for new_product in products['products']:
+    for new_product in products:
 
         #print(new_product.date_product)
         task = await get_task_by_num_date_batch(number_batch=new_product['number_batch'],
@@ -38,8 +38,12 @@ async def _product_create(items):
 
         await Product.insert(Product(**new_product))
 
-    print({'products_result': products_to_add})
-    return products_to_add
+
+async def get_products():
+
+    products = await Product.select()
+    res = datetime_to_timestamp(products)
+    return res
 
 
 async def get_task_by_num_date_batch(number_batch,
@@ -95,7 +99,13 @@ async def _aggregate_date(item: ProductAggregationRequest):
 
 
 def datetime_to_timestamp(products: list[dict]):
-    for product in products['products']:
+    for product in products:
         product['date_product'] = datetime.fromtimestamp(product['date_product'])
         product['number_batch'] = int(product['number_batch'])
+    return products
+
+
+def timestamp_to_datetime(products: list[dict]):
+    for product in products:
+        product['date_product'] = datetime.timestamp(product['date_product'])
     return products

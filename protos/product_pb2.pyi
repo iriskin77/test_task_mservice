@@ -1,3 +1,4 @@
+from google.protobuf import wrappers_pb2 as _wrappers_pb2
 from google.protobuf.internal import containers as _containers
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
@@ -38,7 +39,17 @@ class CreateProductRequest(_message.Message):
     def __init__(self, products: _Optional[_Iterable[_Union[ProductCreate, _Mapping]]] = ...) -> None: ...
 
 class CreateProductResponse(_message.Message):
+    __slots__ = ("status",)
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    status: bool
+    def __init__(self, status: bool = ...) -> None: ...
+
+class GetProductsListRequest(_message.Message):
+    __slots__ = ()
+    def __init__(self) -> None: ...
+
+class GetProductsListResponse(_message.Message):
     __slots__ = ("products",)
     PRODUCTS_FIELD_NUMBER: _ClassVar[int]
-    products: _containers.RepeatedCompositeFieldContainer[ProductCreate]
-    def __init__(self, products: _Optional[_Iterable[_Union[ProductCreate, _Mapping]]] = ...) -> None: ...
+    products: _containers.RepeatedCompositeFieldContainer[Product]
+    def __init__(self, products: _Optional[_Iterable[_Union[Product, _Mapping]]] = ...) -> None: ...

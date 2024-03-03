@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package product;
 
+import "google/protobuf/wrappers.proto";
+
 message Product {
 
   uint64 id = 1;
@@ -23,7 +25,13 @@ message CreateProductRequest {
 }
 
 message CreateProductResponse {
-  repeated ProductCreate products = 1;
+  bool status = 1;
+}
+
+message GetProductsListRequest {}
+
+message GetProductsListResponse {
+  repeated Product products = 1;
 }
 
 //message AggregateRequest {
@@ -37,5 +45,6 @@ message CreateProductResponse {
 
 
 service ProductService {
-  rpc CreateProducts(CreateProductRequest) returns (CreateProductResponse);
+  rpc CreateProducts(CreateProductRequest) returns (google.protobuf.BoolValue);
+  rpc GetProductsList(GetProductsListRequest) returns (GetProductsListResponse);
 }
