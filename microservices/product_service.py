@@ -1,7 +1,10 @@
 from grpc import aio
-from protos import product_pb2_grpc, product_pb2
+from protos import product_pb2_grpc, product_pb2, aggregate_pb2
 from product import db_products
-import google.protobuf.wrappers_pb2
+from microservices.client import grpc_aggregation_client
+from datetime import datetime
+from models.models import Product
+
 
 class ProductService(product_pb2_grpc.ProductServiceServicer):
 
@@ -28,8 +31,25 @@ class ProductService(product_pb2_grpc.ProductServiceServicer):
             print('success', True)
             return product_pb2.GetProductsListResponse(products=products)
 
+    async def AggregateProduct(self, request, context):
+        print("AggregateProduct")
+        print(request.unique_code)
+        pr = await db_products.get_product_by_unique_code(unique_code=request.unique_code)
+        print('pr', pr)
+        if pr is not None:
 
+            print('pr_timestamp', pr)
 
+            client = await grpc_aggregation_client()
+
+            product_aggregated_status = await client.AggregateProduct(
+                aggregate_pb2.ProductToAggregateRequest(product=pr)
+            )
+            print(product_aggregated_status.is_aggregated)
+            return product_pb2.AggregateResponse(is_aggregated=product_aggregated_status.is_aggregated)
+
+        else:
+            return product_pb2.AggregateResponse(is_aggregated=False)
 
 
 async def run_server(address):

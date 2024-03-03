@@ -2,29 +2,17 @@ syntax = "proto3";
 
 package aggregate;
 
-import "google/protobuf/wrappers.proto";
+// import "google/protobuf/wrappers.proto";
+import "protos/product.proto";
 
 message ProductToAggregateRequest {
-  string unique_code = 1;
+  product.Product product = 1;
 }
 
 message ProductToAggregateResponse {
-
-  string unique_code = 1;
-  bool is_aggregated = 2;
-  float aggregated_at = 3;
-
-}
-
-message StatusProductAggregationRequest{
-  string unique_code = 1;
-}
-
-message StatusProductAggregationResponse{
   bool is_aggregated = 1;
 }
 
 service AggregationService {
   rpc AggregateProduct(ProductToAggregateRequest) returns (ProductToAggregateResponse);
-  rpc GetStatusAggregation(StatusProductAggregationRequest) returns (google.protobuf.BoolValue);
 }

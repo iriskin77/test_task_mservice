@@ -34,17 +34,16 @@ message GetProductsListResponse {
   repeated Product products = 1;
 }
 
-//message AggregateRequest {
-//  uint64 id = 1;
-//  string unique_code = 2;
-//}
-//
-//message AggregateResponse {
-//  Product product = 1;
-//}
+message AggregateRequest {
+  string unique_code = 1;
+}
 
+message AggregateResponse {
+  bool is_aggregated = 1;
+}
 
 service ProductService {
   rpc CreateProducts(CreateProductRequest) returns (google.protobuf.BoolValue);
   rpc GetProductsList(GetProductsListRequest) returns (GetProductsListResponse);
+  rpc AggregateProduct(AggregateRequest) returns (AggregateResponse);
 }

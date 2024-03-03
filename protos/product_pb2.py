@@ -15,7 +15,7 @@ _sym_db = _symbol_database.Default()
 from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14protos/product.proto\x12\x07product\x1a\x1egoogle/protobuf/wrappers.proto\"\x84\x01\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x13\n\x0bunique_code\x18\x02 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x03 \x01(\x04\x12\x15\n\ris_aggregated\x18\x04 \x01(\x08\x12\x15\n\raggregated_at\x18\x05 \x01(\x02\x12\x14\n\x0c\x64\x61te_product\x18\x06 \x01(\x02\"P\n\rProductCreate\x12\x13\n\x0bunique_code\x18\x01 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x02 \x01(\x04\x12\x14\n\x0c\x64\x61te_product\x18\x03 \x01(\x02\"@\n\x14\x43reateProductRequest\x12(\n\x08products\x18\x01 \x03(\x0b\x32\x16.product.ProductCreate\"\'\n\x15\x43reateProductResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\"\x18\n\x16GetProductsListRequest\"=\n\x17GetProductsListResponse\x12\"\n\x08products\x18\x01 \x03(\x0b\x32\x10.product.Product2\xb3\x01\n\x0eProductService\x12K\n\x0e\x43reateProducts\x12\x1d.product.CreateProductRequest\x1a\x1a.google.protobuf.BoolValue\x12T\n\x0fGetProductsList\x12\x1f.product.GetProductsListRequest\x1a .product.GetProductsListResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14protos/product.proto\x12\x07product\x1a\x1egoogle/protobuf/wrappers.proto\"\x84\x01\n\x07Product\x12\n\n\x02id\x18\x01 \x01(\x04\x12\x13\n\x0bunique_code\x18\x02 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x03 \x01(\x04\x12\x15\n\ris_aggregated\x18\x04 \x01(\x08\x12\x15\n\raggregated_at\x18\x05 \x01(\x02\x12\x14\n\x0c\x64\x61te_product\x18\x06 \x01(\x02\"P\n\rProductCreate\x12\x13\n\x0bunique_code\x18\x01 \x01(\t\x12\x14\n\x0cnumber_batch\x18\x02 \x01(\x04\x12\x14\n\x0c\x64\x61te_product\x18\x03 \x01(\x02\"@\n\x14\x43reateProductRequest\x12(\n\x08products\x18\x01 \x03(\x0b\x32\x16.product.ProductCreate\"\'\n\x15\x43reateProductResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\"\x18\n\x16GetProductsListRequest\"=\n\x17GetProductsListResponse\x12\"\n\x08products\x18\x01 \x03(\x0b\x32\x10.product.Product\"\'\n\x10\x41ggregateRequest\x12\x13\n\x0bunique_code\x18\x01 \x01(\t\"*\n\x11\x41ggregateResponse\x12\x15\n\ris_aggregated\x18\x01 \x01(\x08\x32\xfe\x01\n\x0eProductService\x12K\n\x0e\x43reateProducts\x12\x1d.product.CreateProductRequest\x1a\x1a.google.protobuf.BoolValue\x12T\n\x0fGetProductsList\x12\x1f.product.GetProductsListRequest\x1a .product.GetProductsListResponse\x12I\n\x10\x41ggregateProduct\x12\x19.product.AggregateRequest\x1a\x1a.product.AggregateResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,6 +34,10 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _globals['_GETPRODUCTSLISTREQUEST']._serialized_end=413
   _globals['_GETPRODUCTSLISTRESPONSE']._serialized_start=415
   _globals['_GETPRODUCTSLISTRESPONSE']._serialized_end=476
-  _globals['_PRODUCTSERVICE']._serialized_start=479
-  _globals['_PRODUCTSERVICE']._serialized_end=658
+  _globals['_AGGREGATEREQUEST']._serialized_start=478
+  _globals['_AGGREGATEREQUEST']._serialized_end=517
+  _globals['_AGGREGATERESPONSE']._serialized_start=519
+  _globals['_AGGREGATERESPONSE']._serialized_end=561
+  _globals['_PRODUCTSERVICE']._serialized_start=564
+  _globals['_PRODUCTSERVICE']._serialized_end=818
 # @@protoc_insertion_point(module_scope)

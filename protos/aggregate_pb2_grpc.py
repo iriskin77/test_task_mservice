@@ -2,7 +2,6 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from google.protobuf import wrappers_pb2 as google_dot_protobuf_dot_wrappers__pb2
 from protos import aggregate_pb2 as protos_dot_aggregate__pb2
 
 
@@ -20,23 +19,12 @@ class AggregationServiceStub(object):
                 request_serializer=protos_dot_aggregate__pb2.ProductToAggregateRequest.SerializeToString,
                 response_deserializer=protos_dot_aggregate__pb2.ProductToAggregateResponse.FromString,
                 )
-        self.GetStatusAggregation = channel.unary_unary(
-                '/aggregate.AggregationService/GetStatusAggregation',
-                request_serializer=protos_dot_aggregate__pb2.StatusProductAggregationRequest.SerializeToString,
-                response_deserializer=google_dot_protobuf_dot_wrappers__pb2.BoolValue.FromString,
-                )
 
 
 class AggregationServiceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def AggregateProduct(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def GetStatusAggregation(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -49,11 +37,6 @@ def add_AggregationServiceServicer_to_server(servicer, server):
                     servicer.AggregateProduct,
                     request_deserializer=protos_dot_aggregate__pb2.ProductToAggregateRequest.FromString,
                     response_serializer=protos_dot_aggregate__pb2.ProductToAggregateResponse.SerializeToString,
-            ),
-            'GetStatusAggregation': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetStatusAggregation,
-                    request_deserializer=protos_dot_aggregate__pb2.StatusProductAggregationRequest.FromString,
-                    response_serializer=google_dot_protobuf_dot_wrappers__pb2.BoolValue.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -79,22 +62,5 @@ class AggregationService(object):
         return grpc.experimental.unary_unary(request, target, '/aggregate.AggregationService/AggregateProduct',
             protos_dot_aggregate__pb2.ProductToAggregateRequest.SerializeToString,
             protos_dot_aggregate__pb2.ProductToAggregateResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def GetStatusAggregation(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/aggregate.AggregationService/GetStatusAggregation',
-            protos_dot_aggregate__pb2.StatusProductAggregationRequest.SerializeToString,
-            google_dot_protobuf_dot_wrappers__pb2.BoolValue.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

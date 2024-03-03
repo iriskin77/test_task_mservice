@@ -53,3 +53,15 @@ class GetProductsListResponse(_message.Message):
     PRODUCTS_FIELD_NUMBER: _ClassVar[int]
     products: _containers.RepeatedCompositeFieldContainer[Product]
     def __init__(self, products: _Optional[_Iterable[_Union[Product, _Mapping]]] = ...) -> None: ...
+
+class AggregateRequest(_message.Message):
+    __slots__ = ("unique_code",)
+    UNIQUE_CODE_FIELD_NUMBER: _ClassVar[int]
+    unique_code: str
+    def __init__(self, unique_code: _Optional[str] = ...) -> None: ...
+
+class AggregateResponse(_message.Message):
+    __slots__ = ("is_aggregated",)
+    IS_AGGREGATED_FIELD_NUMBER: _ClassVar[int]
+    is_aggregated: bool
+    def __init__(self, is_aggregated: bool = ...) -> None: ...

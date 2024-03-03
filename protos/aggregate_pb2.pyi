@@ -1,33 +1,17 @@
-from google.protobuf import wrappers_pb2 as _wrappers_pb2
+from protos import product_pb2 as _product_pb2
 from google.protobuf import descriptor as _descriptor
 from google.protobuf import message as _message
-from typing import ClassVar as _ClassVar, Optional as _Optional
+from typing import ClassVar as _ClassVar, Mapping as _Mapping, Optional as _Optional, Union as _Union
 
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class ProductToAggregateRequest(_message.Message):
-    __slots__ = ("unique_code",)
-    UNIQUE_CODE_FIELD_NUMBER: _ClassVar[int]
-    unique_code: str
-    def __init__(self, unique_code: _Optional[str] = ...) -> None: ...
+    __slots__ = ("product",)
+    PRODUCT_FIELD_NUMBER: _ClassVar[int]
+    product: _product_pb2.Product
+    def __init__(self, product: _Optional[_Union[_product_pb2.Product, _Mapping]] = ...) -> None: ...
 
 class ProductToAggregateResponse(_message.Message):
-    __slots__ = ("unique_code", "is_aggregated", "aggregated_at")
-    UNIQUE_CODE_FIELD_NUMBER: _ClassVar[int]
-    IS_AGGREGATED_FIELD_NUMBER: _ClassVar[int]
-    AGGREGATED_AT_FIELD_NUMBER: _ClassVar[int]
-    unique_code: str
-    is_aggregated: bool
-    aggregated_at: float
-    def __init__(self, unique_code: _Optional[str] = ..., is_aggregated: bool = ..., aggregated_at: _Optional[float] = ...) -> None: ...
-
-class StatusProductAggregationRequest(_message.Message):
-    __slots__ = ("unique_code",)
-    UNIQUE_CODE_FIELD_NUMBER: _ClassVar[int]
-    unique_code: str
-    def __init__(self, unique_code: _Optional[str] = ...) -> None: ...
-
-class StatusProductAggregationResponse(_message.Message):
     __slots__ = ("is_aggregated",)
     IS_AGGREGATED_FIELD_NUMBER: _ClassVar[int]
     is_aggregated: bool

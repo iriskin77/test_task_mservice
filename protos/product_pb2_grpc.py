@@ -7,16 +7,7 @@ from protos import product_pb2 as protos_dot_product__pb2
 
 
 class ProductServiceStub(object):
-    """message AggregateRequest {
-    uint64 id = 1;
-    string unique_code = 2;
-    }
-
-    message AggregateResponse {
-    Product product = 1;
-    }
-
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -34,19 +25,15 @@ class ProductServiceStub(object):
                 request_serializer=protos_dot_product__pb2.GetProductsListRequest.SerializeToString,
                 response_deserializer=protos_dot_product__pb2.GetProductsListResponse.FromString,
                 )
+        self.AggregateProduct = channel.unary_unary(
+                '/product.ProductService/AggregateProduct',
+                request_serializer=protos_dot_product__pb2.AggregateRequest.SerializeToString,
+                response_deserializer=protos_dot_product__pb2.AggregateResponse.FromString,
+                )
 
 
 class ProductServiceServicer(object):
-    """message AggregateRequest {
-    uint64 id = 1;
-    string unique_code = 2;
-    }
-
-    message AggregateResponse {
-    Product product = 1;
-    }
-
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def CreateProducts(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -55,6 +42,12 @@ class ProductServiceServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def GetProductsList(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def AggregateProduct(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -73,6 +66,11 @@ def add_ProductServiceServicer_to_server(servicer, server):
                     request_deserializer=protos_dot_product__pb2.GetProductsListRequest.FromString,
                     response_serializer=protos_dot_product__pb2.GetProductsListResponse.SerializeToString,
             ),
+            'AggregateProduct': grpc.unary_unary_rpc_method_handler(
+                    servicer.AggregateProduct,
+                    request_deserializer=protos_dot_product__pb2.AggregateRequest.FromString,
+                    response_serializer=protos_dot_product__pb2.AggregateResponse.SerializeToString,
+            ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
             'product.ProductService', rpc_method_handlers)
@@ -81,16 +79,7 @@ def add_ProductServiceServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class ProductService(object):
-    """message AggregateRequest {
-    uint64 id = 1;
-    string unique_code = 2;
-    }
-
-    message AggregateResponse {
-    Product product = 1;
-    }
-
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def CreateProducts(request,
@@ -123,5 +112,22 @@ class ProductService(object):
         return grpc.experimental.unary_unary(request, target, '/product.ProductService/GetProductsList',
             protos_dot_product__pb2.GetProductsListRequest.SerializeToString,
             protos_dot_product__pb2.GetProductsListResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def AggregateProduct(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/product.ProductService/AggregateProduct',
+            protos_dot_product__pb2.AggregateRequest.SerializeToString,
+            protos_dot_product__pb2.AggregateResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

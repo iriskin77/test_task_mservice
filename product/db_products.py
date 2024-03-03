@@ -66,37 +66,6 @@ async def get_product_by_unique_code(unique_code):
         return product
     return None
 
-# ================ Aggregation data ================
-
-
-async def _aggregate_date(item: ProductAggregationRequest):
-
-    product = await get_product_by_unique_code(unique_code=item.unique_code)
-    print(product)
-
-    # Если продукции с данным уникальным кодом не существует, то необходимо вернуть 404 ошибку.
-    if product is None:
-        raise HTTPException(status_code=404, detail="Not Found")
-
-    # Если данный уникальный код уже был использован, то вернуть 400 ошибку
-    if product['is_aggregated']:
-        raise HTTPException(status_code=400,
-                            detail=f"unique code already used at {product['is_aggregated']}")
-
-    task = await _get_task_by_id(id=item.task_id)
-    if task is None:
-        raise HTTPException(status_code=404, detail="Task with this id was not found")
-
-    # Если уникальный код существует, но привязан к другой партии, необходимо вернуть 400 ошибку
-    if task['number_batch'] != product['number_batch']:
-        raise HTTPException(status_code=400,
-                            detail="unique code is attached to another batch")
-
-    await Product.update({'is_aggregated': True, 'aggregated_at': datetime.now()}).\
-        where(Product.unique_code == item.unique_code)
-
-    return product
-
 
 def datetime_to_timestamp(products: list[dict]):
     for product in products:
@@ -109,3 +78,13 @@ def timestamp_to_datetime(products: list[dict]):
     for product in products:
         product['date_product'] = datetime.timestamp(product['date_product'])
     return products
+
+
+async def get_product_by_unique_code(unique_code: str):
+    product = await Product.select().where(Product.unique_code == unique_code).first()
+
+    if product:
+        product['aggregated_at'] = datetime.timestamp(product['aggregated_at'])
+        product['date_product'] = datetime.timestamp(product['date_product'])
+        return product
+
