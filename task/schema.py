@@ -1,7 +1,11 @@
 from typing import List, Optional
+
+import google.protobuf.internal.well_known_types
 #from product.schema import ProductBase
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 from datetime import datetime, date
+from google.protobuf.internal.well_known_types import Timestamp
+
 
 
 class CreateTask(BaseModel):
@@ -21,6 +25,14 @@ class CreateTask(BaseModel):
 
     model_config = ConfigDict(populate_by_name=True,)
 
+    @field_validator('closed_at', 'date_batch', 'date_begin', 'date_end', mode='after')
+    @classmethod
+    def datetime_to_timestamp(cls, value):
+        return datetime.timestamp(value)
+
+
+
+
 
 class TaskGetPostPatch(BaseModel):
     is_closed: bool | None = Field(validation_alias="СтатусЗакрытия", default=True)
@@ -30,7 +42,7 @@ class TaskGetPostPatch(BaseModel):
     shift: str | None = Field(validation_alias="Смена")
     group: str | None = Field(validation_alias="Бригада")
     number_batch: int | None = Field(validation_alias="НомерПартии")
-    date_batch: date | None = Field(validation_alias="ДатаПартии")
+    date_batch: datetime | None = Field(validation_alias="ДатаПартии")
     nomenclature: str | None = Field(validation_alias="Номенклатура")
     code: str | None = Field(validation_alias="КодЕКН")
     index: str | None = Field(validation_alias="ИдентификаторРЦ")
@@ -38,6 +50,11 @@ class TaskGetPostPatch(BaseModel):
     date_end: datetime | None = Field(validation_alias="ДатаВремяОкончанияСмены")
 
     model_config = ConfigDict(populate_by_name=True,)
+
+    @field_validator('closed_at', 'date_batch', 'date_begin', 'date_end')
+    @classmethod
+    def datetime_to_timestamp(cls, value):
+        return datetime.timestamp(value)
 
 
 class ListTasksAdd(BaseModel):
@@ -56,12 +73,17 @@ class TaskChange(BaseModel):
     shift: str | None
     group: str | None
     number_batch: int | None
-    date_batch: date | None
+    date_batch: datetime | None
     nomenclature: str | None
     code: str | None
     index: str | None
     date_begin: datetime | None
     date_end: datetime | None
+
+    @field_validator('date_batch', 'date_begin', 'date_end', mode='after')
+    @classmethod
+    def datetime_to_timestamp(cls, value):
+        return datetime.timestamp(value)
 
 
 class TaskFilter(BaseModel):

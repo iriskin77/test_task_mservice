@@ -7,25 +7,28 @@ from task.schema import TaskChange, TaskGetPostPatch, ListTasksAdd, CreateTask
 from protos import task_pb2_grpc, task_pb2
 from google.protobuf.json_format import MessageToDict
 from fastapi.responses import JSONResponse
+from models.models import Task
 from datetime import datetime
 import time
-#from google.protobuf.timestamp_pb2 import Timestamp
 
 
 router_task = APIRouter()
 
 
 @router_task.post("/", response_model=CreateTask)
-async def create_task(item: CreateTask, client: typing.Any = Depends(grpc_task_client)) -> JSONResponse:
+async def create_task(item: CreateTask, client: typing.Any = Depends(grpc_task_client)):
 
     """"Эндпойнт добавления сменных заданий"""""
-    data = db_tasks.datetime_to_timestamp(item.dict())
-    #unixtime = time.mktime(data['closed_at'] .timetuple())
 
     try:
-        task = await client.CreateTask(task_pb2.CreateTaskRequest(**data))
 
+        print(item.dict())
+        data = item.dict()
+        task = await client.CreateTask(task_pb2.CreateTaskRequest(**data))
         return JSONResponse(MessageToDict(task, preserving_proto_field_name=True))
+        #data = db_tasks.timestamp_to_datetime(item.dict())
+        #res = await Task.insert(Task(**data))
+        #return item.dict()
     except AioRpcError as ex:
         raise HTTPException(status_code=500, detail=f"Database error: {ex.details()}")
 
@@ -70,12 +73,12 @@ async def change_task(params_to_update: TaskChange, client: typing.Any = Depends
                             detail="At least one parameter for user update info should be provided")
 
     params = params_to_update.dict(exclude_none=True)
-    data = db_tasks.datetime_to_timestamp(params)
+    #data = db_tasks.datetime_to_timestamp(params)
     #data['id'] = id
-
+    print(params)
     try:
         #print(data)
-        task_updated = await client.UpdateTask(task_pb2.UpdateTaskRequest(**data))
+        task_updated = await client.UpdateTask(task_pb2.UpdateTaskRequest(**params))
         #res = await db_tasks._change_task(id=id, params_to_update=params)
         #return res
         return JSONResponse(MessageToDict(task_updated))

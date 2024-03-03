@@ -33,8 +33,8 @@ class Product(Table):
     id = Serial(primary_key=True, unique=True)
     unique_code = Varchar(unique=True) # "УникальныйКодПродукта": "12gRV60MMsn1"
     #number_batch = Integer(unique=True)  #"НомерПартии": 22222,
-    number_batch = ForeignKey(references=Task, target_column=Task.number_batch, null=True)
-    #number_batch = Integer()
+    #number_batch = ForeignKey(references=Task, target_column=Task.number_batch, null=True)
+    number_batch = Integer()
     is_aggregated = Boolean(null=True)
     aggregated_at = Timestamp(null=True)
     date_product = Timestamp() #"ДатаПартии": "2024-01-30"
