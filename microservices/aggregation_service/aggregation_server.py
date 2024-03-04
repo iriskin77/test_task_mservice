@@ -1,4 +1,4 @@
-from microservices.aggregation_service import run_server
+from microservices.aggregation_service.aggregation_service import run_server
 from core.settings import AGGREGATION_GRPC_SERVER
 import asyncio
 

@@ -1,4 +1,4 @@
-from microservices.product_service import run_server
+from microservices.product_service.product_service import run_server
 from core.settings import PRODUCT_GRPC_SERVER
 import asyncio
 

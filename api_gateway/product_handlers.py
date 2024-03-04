@@ -1,16 +1,16 @@
 from typing import Any
-
 from fastapi import APIRouter, Depends, HTTPException
-from product.schema import ListAddProducts, ProductAggregationRequest, ProductAggregationResponse
-from product import db_products
-from microservices.client import grpc_product_client, grpc_aggregation_client
-from protos import product_pb2, product_pb2_grpc, aggregate_pb2, aggregate_pb2_grpc
+from microservices.product_service.schema import ListAddProducts
+from microservices.client import grpc_product_client
+from protos import product_pb2
 from google.protobuf.json_format import MessageToDict
 from fastapi.responses import JSONResponse
 from grpc.aio import AioRpcError
-
+from logs.logs import init_logger
 
 router_product = APIRouter()
+
+
 
 
 @router_product.post("/")
@@ -20,10 +20,7 @@ async def product_create(items: ListAddProducts, client: Any = Depends(grpc_prod
     """"Эндпойнт добавления продукции для сменного задания (партии)"""""
 
     try:
-        print(items.dict())
         is_products_added = await client.CreateProducts(product_pb2.CreateProductRequest(**items.dict()))
-        #res = await db_products._product_create(items=items)
-        #return res
         return JSONResponse(MessageToDict(is_products_added))
     except Exception as ex:
         raise HTTPException(status_code=500, detail=f"Database error: {ex}")

@@ -1,10 +1,5 @@
 from datetime import datetime
-from models.models import Task, Product
-
-from product.schema import ListAddProducts, ProductAggregationRequest, ProductBase
-from fastapi import HTTPException
-from task.db_tasks import _get_task_by_id
-from google.protobuf.json_format import MessageToDict
+from microservices.task_service.models.models import Product
 
 
 # ================ Aggregation data ================

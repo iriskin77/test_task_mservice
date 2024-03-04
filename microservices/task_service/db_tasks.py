@@ -1,9 +1,7 @@
-from models.models import Task, Product
-from datetime import datetime, date
-from task.schema import TaskChange, TaskFilter, TaskFilterRes, TaskGetPostPatch, ListTasksAdd
+from models.models import Task
+from datetime import datetime
 from google.protobuf.json_format import MessageToDict
-from task.schema import TaskGetPostPatch
-import time
+
 
 # ==================Post endpoint. Create a task==================
 
@@ -87,12 +85,12 @@ async def _change_task(params_to_update):
     id = dict_from_message['id']
     task_updated = await Task.update(dict_from_message).where(Task.id == id).returning(Task.id)
 
-    return task_updated
+    return task_updated[0]['id']
 
 
 async def _delete_task(id: int):
     task = await Task.delete().where(Task.id == id).returning(Task.id)
-    return task
+    return task[0]['id']
 
 
 def timestamp_to_datetime(items: dict):

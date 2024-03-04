@@ -2,15 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import typing
 from grpc.aio import AioRpcError
 from microservices.client import grpc_task_client
-from task import db_tasks
-from task.schema import TaskChange, TaskGetPostPatch, ListTasksAdd, CreateTask
-from protos import task_pb2_grpc, task_pb2
+from microservices.task_service import db_tasks
+from microservices.task_service.schema import TaskChange, TaskGetPostPatch, CreateTask
+from protos import task_pb2
 from google.protobuf.json_format import MessageToDict
 from fastapi.responses import JSONResponse
-from models.models import Task
-from datetime import datetime
-import time
-
 
 router_task = APIRouter()
 

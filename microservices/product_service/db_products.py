@@ -1,17 +1,15 @@
 from datetime import datetime
 from models.models import Task, Product
-
-from product.schema import ListAddProducts, ProductAggregationRequest, ProductBase
-from fastapi import HTTPException
-from task.db_tasks import _get_task_by_id
+from logs.logs import init_logger
 from google.protobuf.json_format import MessageToDict
+
+logger = init_logger(__name__)
 
 
 async def _product_create(items) -> None:
+    logger.info("fn _product_create: inserting product object into db has been started")
     dict_product = MessageToDict(items, preserving_proto_field_name=True)
-    print('dict_product', dict_product)
     products = datetime_to_timestamp(products=dict_product['products'])
-    print(products)
     products_to_add = []
     for new_product in products:
 
@@ -37,6 +35,7 @@ async def _product_create(items) -> None:
                 #print(new_product)
 
         await Product.insert(Product(**new_product))
+        logger.info("fn _product_create: product object into db has been inserted successfully")
 
 
 async def get_products():
@@ -61,7 +60,6 @@ async def get_task_by_num_date_batch(number_batch,
 async def get_product_by_unique_code(unique_code):
 
     product = await Product.select().where(Product.unique_code == unique_code).first()
-    #print(product)
     if product:
         return product
     return None
